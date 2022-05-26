@@ -1,0 +1,48 @@
+.GUI_TITLE {
+	margin-top: 5px;
+	margin-bottom: 15px;
+	color: white;
+	font-size: 22px;
+	text-align: center;
+	font-weight: 600;
+}
+.GUI_ITEM_TITLE_CONTAINER {
+	width: 40%;
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.GUI_ITEM_TITLE {
+	font-size: 20px;
+	color: rgb(240, 240, 240);
+	display: inline-block;
+	vertical-align: sub;
+}
+.GUI_RANGE {
+}
+.__GUI__ {
+}
+.__GUI__ input[type='range'] {
+	margin: 0px 20px;
+	-webkit-appearance: none;
+	background: #0c2335;
+	width: 55%;
+	height: 27px;
+}
+.GUI_STATS {
+	width: 13%;
+	background: #0c2335;
+	text-align: center;
+	color: rgb(240, 240, 240);
+	margin-right: 10px;
+	height: 26px;
+	outline: none;
+	border: none;
+}
+.GUI_COMPONENT {
+	display: flex;
+	padding-left: 14px;
+	margin-left: 5px;
+	border-left: 2px solid rgb(240, 240, 240);
+	margin-bottom: 5px;
+}
