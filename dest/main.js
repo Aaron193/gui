@@ -1,4 +1,4 @@
-"use strict";
+import { getRangeComponentHTML, getCheckboxHTML } from './html_utils.js'; // .js ok, wont work without
 // temp for now
 const COLOR_THEMES = {
     dark: 'rgb(10,10,10)',
@@ -28,11 +28,25 @@ const COLOR_THEMES = {
 //     margin-bottom: 5px;
 // }
 // `);
+// class ComponentManager {
+// 	components: Array<Component>;
+// 	constructor() {
+// 		this.components = [];
+// 	}
+// 	hasFolderName(folderName: string) {
+// 		return this.components.find(comp => comp instanceof Folder && comp.name === folderName) != undefined;
+// 	}
+// 	addComponentToFolder() {}
+// 	addFolderWithComponent() {}
+// }
 class GUI {
-    constructor(options) {
+    // componentManager: ComponentManager;
+    constructor(options, content) {
         // this.loadStyles();
         this.options = options;
+        this.components = content;
         this.gui = document.createElement('div');
+        // this.componentManager = new ComponentManager();
         this.render();
     }
     // loadStyles(): void {
@@ -54,33 +68,29 @@ class GUI {
         guiTitle.textContent = this.options.title;
         this.gui.append(guiTitle);
         body.append(this.gui);
+        this.loadGuiContent(this.components);
     }
-    addComponent(name, component) {
-        switch (component.type) {
-            case 'slider':
-                const containter = document.createElement('div');
-                containter.className = 'GUI_COMPONENT';
-                const titleCont = document.createElement('div');
-                titleCont.className = 'GUI_ITEM_TITLE_CONTAINER';
-                const title = document.createElement('div');
-                title.className = 'GUI_ITEM_TITLE';
-                title.textContent = name;
-                titleCont.append(title);
-                const slider = document.createElement('input');
-                slider.className = 'GUI_RANGE';
-                slider.type = 'range';
-                slider.min = component.min;
-                slider.max = component.max;
-                const stats = document.createElement('input');
-                stats.className = 'GUI_STATS';
-                stats.type = 'text';
-                stats.value = '43'; // TODO: here
-                containter.append(titleCont);
-                containter.append(slider);
-                containter.append(stats);
-                this.gui.append(containter);
-                break;
+    parseC(components) {
+        let html = '';
+        for (const component of components) {
+            if (component.type === 'folder') {
+                html += `<div class="GUI_FOLDER_TITLE">\>${component.name}</div>`;
+                html += `<div class="GUI_FOLDER">`;
+                html += this.parseC(component.content);
+                html += '</div>';
+                continue;
+            }
+            if (component.type === 'checkbox') {
+                html += getCheckboxHTML(component);
+            }
+            if (component.type === 'slider')
+                html += getRangeComponentHTML(component);
         }
+        return html;
+    }
+    loadGuiContent(components) {
+        const html = this.parseC(components);
+        this.gui.innerHTML += html;
     }
 }
 function addCSS(gui, options) {
@@ -101,22 +111,32 @@ const myGui = new GUI({
     align: 'right',
     opacity: '0.9',
     theme: 'dark',
-});
-myGui.addComponent('component name', {
-    type: 'slider',
-    min: '0',
-    max: '100',
-    step: '1',
-});
-myGui.addComponent('component name', {
-    type: 'slider',
-    min: '0',
-    max: '100',
-    step: '1',
-});
-myGui.addComponent('component name', {
-    type: 'slider',
-    min: '0',
-    max: '100',
-    step: '1',
-});
+}, [
+    { type: 'slider', name: 'component name', opt: { min: '0', max: '100', step: '1' } },
+    { type: 'slider', name: 'component name 2', opt: { min: '0', max: '100', step: '1' } },
+    {
+        type: 'checkbox',
+        name: 'my checkbox',
+        action: () => {
+            console.log('CLICKED CHECKBOX!');
+        },
+    },
+    { type: 'folder', name: 'misc', content: [{ type: 'slider', name: 'nested component', opt: { min: '0', max: '100', step: '1' } }] },
+]);
+// myGui.addComponent('component name', { type: 'slider', opt: { min: '0', max: '100', step: '1' } });
+// myGui.addComponent('component name', {
+// 	type: 'slider',
+// 	min: '0',
+// 	max: '100',
+// 	step: '1',
+// });
+// myGui.addComponent(
+// 	'component name',
+// 	{
+// 		type: 'slider',
+// 		min: '0',
+// 		max: '100',
+// 		step: '1',
+// 	},
+// 	'folderName'
+// );

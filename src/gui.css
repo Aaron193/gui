@@ -18,8 +18,7 @@
 	display: inline-block;
 	vertical-align: sub;
 }
-.GUI_RANGE {
-}
+
 .__GUI__ {
 }
 .__GUI__ input[type='range'] {
@@ -28,6 +27,13 @@
 	background: #0c2335;
 	width: 55%;
 	height: 27px;
+}
+.__GUI__ input[type='checkbox'] {
+	margin: 0;
+	width: 20px;
+	height: 20px;
+	vertical-align: middle;
+	cursor: pointer;
 }
 .GUI_STATS {
 	width: 13%;
@@ -43,6 +49,22 @@
 	display: flex;
 	padding-left: 14px;
 	margin-left: 5px;
-	border-left: 2px solid rgb(240, 240, 240);
+	/* border-left: 2px solid rgb(240, 240, 240); */
 	margin-bottom: 5px;
+}
+
+.GUI_FOLDER {
+	display: block;
+	box-sizing: border-box;
+	/* padding-left: 14px; */
+	margin-bottom: 10px;
+	margin-left: 10px;
+	border-left: 2px solid rgb(240, 240, 240);
+	font-size: 20px;
+	color: rgb(240, 240, 240);
+}
+.GUI_FOLDER_TITLE {
+	color: rgb(240, 240, 240);
+	font-size: 20px;
+	padding-left: 15px;
 }
