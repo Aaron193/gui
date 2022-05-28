@@ -1,7 +1,7 @@
 import { getRangeComponentHTML, getCheckboxHTML } from './html_utils.js'; // .js ok, wont work without
 // temp for now
 const COLOR_THEMES = {
-    dark: 'rgb(10,10,10)',
+    dark: 'black',
     light: 'rgb(225,225,225)',
 };
 // const STYLES = document.createTextNode(`
@@ -109,7 +109,7 @@ const myGui = new GUI({
     width: '540',
     height: '400',
     align: 'right',
-    opacity: '0.9',
+    opacity: '1',
     theme: 'dark',
 }, [
     { type: 'slider', name: 'component name', opt: { min: '0', max: '100', step: '1' } },

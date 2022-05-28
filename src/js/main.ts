@@ -3,7 +3,7 @@ import { Theme, Options, Component } from './types/types';
 import { Folder } from './folder';
 // temp for now
 const COLOR_THEMES = {
-	dark: 'rgb(10,10,10)',
+	dark: 'black',
 	light: 'rgb(225,225,225)',
 };
 
@@ -130,7 +130,7 @@ const myGui = new GUI(
 		width: '540',
 		height: '400',
 		align: 'right',
-		opacity: '0.9',
+		opacity: '1',
 		theme: 'dark',
 	},
 	[
