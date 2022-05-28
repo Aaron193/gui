@@ -1,4 +1,10 @@
 import { getRangeComponentHTML, getCheckboxHTML } from './html_utils.js'; // .js ok, wont work without
+import { Folder } from './components/folder/folder.js';
+import { FolderButton } from './components/folder/folderButton.js';
+import { Slider } from './components/slider/slider.js';
+import { Checkbox } from './components/checkbox.js';
+import { SliderText } from './components/slider/text.js';
+// TODO: figure out way to bind variables and events system to gui
 // temp for now
 const COLOR_THEMES = {
     dark: 'black',
@@ -45,6 +51,7 @@ class GUI {
         // this.loadStyles();
         this.options = options;
         this.components = content;
+        this.carray = [];
         this.gui = document.createElement('div');
         // this.componentManager = new ComponentManager();
         this.render();
@@ -74,23 +81,58 @@ class GUI {
         let html = '';
         for (const component of components) {
             if (component.type === 'folder') {
-                html += `<div class="GUI_FOLDER_TITLE">\>${component.name}</div>`;
-                html += `<div class="GUI_FOLDER">`;
+                html += `<div data-id="folder" class="GUI_FOLDER_TITLE">\>${component.name}</div>`;
+                html += `<div class="GUI_FOLDER"> <div class= "GUI_FOLDER_CONTAINER">`;
                 html += this.parseC(component.content);
+                html += '</div></div>';
                 html += '</div>';
                 continue;
             }
             if (component.type === 'checkbox') {
-                html += getCheckboxHTML(component);
+                html += getCheckboxHTML(component, 'checkbox');
+                continue;
             }
-            if (component.type === 'slider')
-                html += getRangeComponentHTML(component);
+            if (component.type === 'slider') {
+                html += getRangeComponentHTML(component, 'slider');
+                continue;
+            }
         }
         return html;
     }
     loadGuiContent(components) {
         const html = this.parseC(components);
         this.gui.innerHTML += html;
+        this.addFolder();
+        this.addSlider();
+        this.addCheckbox();
+    }
+    addCheckbox() {
+        const CHECKBOXES = [...document.querySelectorAll('.GUI_CHECKBOX')];
+        for (const checkbox of CHECKBOXES) {
+            const myVar = false;
+            const myFunc = function (e) {
+                console.log('U CLICKED IT!', e);
+            };
+            this.carray.push(new Checkbox(checkbox, myVar, myFunc));
+        }
+    }
+    addSlider() {
+        const SLIDERS = [...document.querySelectorAll('.GUI_SLIDER ')];
+        for (const slider of SLIDERS) {
+            this.carray.push(new Slider(slider));
+            this.carray.push(new SliderText(slider.nextElementSibling));
+        }
+    }
+    addFolder() {
+        // fix display of folders
+        const FOLDERS = [...document.querySelectorAll('.GUI_FOLDER ')];
+        for (const folder of FOLDERS) {
+            this.carray.push(new Folder(folder));
+        }
+        const FOLDER_BUTTONS = [...document.querySelectorAll('.GUI_FOLDER_TITLE')];
+        for (const folderBtn of FOLDER_BUTTONS) {
+            this.carray.push(new FolderButton(folderBtn));
+        }
     }
 }
 function addCSS(gui, options) {
@@ -98,16 +140,15 @@ function addCSS(gui, options) {
     gui.style.position = 'absolute';
     options.align === 'left' ? (gui.style.left = '0px') : (gui.style.right = '0px');
     gui.style.width = options.width + 'px';
-    gui.style.height = options.height + 'px';
     gui.style.opacity = options.opacity;
     gui.style.backgroundColor = backgroundColor;
     return gui;
 }
 // gui library test
+let variable1, variable2, variable3;
 const myGui = new GUI({
     title: 'MY GUI TITLE',
     width: '540',
-    height: '400',
     align: 'right',
     opacity: '1',
     theme: 'dark',
@@ -122,6 +163,15 @@ const myGui = new GUI({
         },
     },
     { type: 'folder', name: 'misc', content: [{ type: 'slider', name: 'nested component', opt: { min: '0', max: '100', step: '1' } }] },
+    {
+        type: 'folder',
+        name: 'misc',
+        content: [
+            { type: 'slider', name: 'nested component', bind: variable1, opt: { min: '0', max: '100', step: '1' } },
+            { type: 'slider', name: 'nested component', bind: variable2, opt: { min: '0', max: '100', step: '1' } },
+            { type: 'slider', name: 'nested component', bind: variable3, opt: { min: '0', max: '100', step: '1' } },
+        ],
+    },
 ]);
 // myGui.addComponent('component name', { type: 'slider', opt: { min: '0', max: '100', step: '1' } });
 // myGui.addComponent('component name', {

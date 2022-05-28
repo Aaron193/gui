@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
 :root {
 	--slider-height: 27px;
 	--accent: rgb(4, 170, 109);
@@ -32,6 +33,10 @@
 }
 
 .__GUI__ {
+	font-family: 'Kanit', sans-serif;
+	user-select: none;
+	padding-bottom: 25px;
+	height: unset;
 }
 .__GUI__ input[type='range'] {
 	margin: 0px 15px;
@@ -91,6 +96,14 @@
 	color: var(--accent);
 	font-size: 20px;
 	padding-left: 15px;
+	cursor: pointer;
+}
+.GUI_FOLDER_TITLE:hover {
+	background-color: rgb(175, 175, 175);
+	color: black;
+}
+.hide {
+	display: none;
 }
 
 input[type='checkbox'] {
